@@ -26,6 +26,7 @@ names = list(zip(*personenliste))[0]
 
 
 app = dash.Dash(__name__, static_folder='static')
+server = app.server
 app.title='Who is in the News!'
 
 app.layout = html.Div([
