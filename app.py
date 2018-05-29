@@ -28,124 +28,130 @@ names = list(zip(*personenliste))[0]
 app = dash.Dash(__name__, static_folder='static')
 server = app.server
 app.title='Who is in the News!'
+app.css.append_css({"external_url": "https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"})
 
 app.layout = html.Div([
     html.H1(children='Who is in the News!', style={'text-align': 'center'}),
-    html.Div([
-            html.Img(src='./static/newspic.jpg')
-            ]),
+    #html.Div([
+            #html.Img(src='./static/newspic.jpg')
+            #]),
+            
+            
     html.Div([
             dcc.Markdown('''This site gives you some **statistics and plots** of the appearence of persons in written news articles. You can use them for research
-or journalistic purposes about how often public persons are mentioned in news articles and how these persons are related to each other.
-
-### The Data
-
-The text-data comes from articles published by *Reuters* agency on their website [www.reuters.com](https://www.reuters.com/).
-At the moment about 70.000 - 80.000 news articles in English and German are indexed. German news are from 2015 until now, English from 2016
-until now.
-
-### The Analysis
-
-For each article a Named Entity Extraction (NER) is conducted with a **machine learning algorithm** to detect the mentions of the persons
-in the texts. This algorithm uses a model witch was **pretrained on a corpus** of Google news articles for English and German. The lists of
-persons in the articles are used to calculate the counts and are stored in a database.
-
-### The Plots
-
-We show a **barchart** of the counts for the most often mentioned persons. For up to four of this persons you can plot the
-**timeseries** of the counts at the same time for a time period you select. For two persons you can calculate their **relation / correlation**
-as a funcion of time.''' ),
+                         or journalistic purposes about how often public persons are mentioned in news articles and how these persons are related to each other.
+                         German data are from 2015 until now, English from 2016 until now. For more information on the data see below.''' ),
     ],
-        style ={'width' : '1100px'}),
-    
-    html.H2(children='''Languages''', style={'text-align': 'left'}),
+      ),
+            
     html.Div([
-            html.H4(children='''Choose the language you want:'''),
-            dcc.RadioItems(
-                id='sprache',
-                options=[{'label': i, 'value': i} for i in ['English', 'German']],
-                value='English',
-                labelStyle={'display': 'inline-block'}
-            )
-        ],
-    style={'width': '40%', 'backgroundColor':'#eeeeee', 'padding' : '20px', 'border-style': 'solid'}),
-   
+            html.Div([
+                    html.H2(children='''Top Persons'''),
+                    html.Div([
+                        html.P(children='''Choose the number of persons:'''),
+                        dcc.Dropdown(
+                            id='histnum',
+                            options=[{'label': i, 'value': i} for i in [10,15,20,25,30,35,40]],
+                            value=20
+                        )
+                    ], className='form-control'),
+                    
+                    html.Div([
+                        html.P(children='''Choose the language:'''),
+                        dcc.RadioItems(
+                            id='sprache',
+                            options=[{'label': i, 'value': i} for i in ['English', 'German']],
+                            value='English'
+                            )
+                    ],className='form-control')
+                ],
+            className='col-lg-4 form-group' ),
+                        
+            html.Div([
+                    dcc.Graph(id='barchart')
+                ],
+            className='col-lg-8')
+        ],         
+    className='row'),
+            
+    
 
-    html.H2(children='''Top Persons''', style={'text-align': 'left'}),
+    html.H2(children='''Variation over time'''),       
+  
     html.Div([
-            html.H4(children='''Choose the number of persons:'''),
-            dcc.Dropdown(
-                    id='histnum',
-                    options=[{'label': i, 'value': i} for i in [10,15,20,25,30,35,40]],
-                    value=20
-                    )
-            ],
-    style={'text-align': 'left','width': '40%', 'backgroundColor':'#eeeeee', 'padding' : '20px', 'border-style': 'solid'}), 
+    
     
     html.Div([
-            dcc.Graph(id='barchart')
-    ],
-    style={'padding-top' : '20px', 'padding-bottom' : '20px'}),
-    
-    html.Div([
-            html.H4(children='''Choose the timespan you want to inspect: '''),
+            html.P(children='''Choose the timespan: '''),
             dcc.DatePickerRange(
                     id='datumrange',
                     min_date_allowed=dt(2015, 1, 1),
                     max_date_allowed=dt(2018, 5, 2),
-                    initial_visible_month=dt(2017, 7, 1),
-                    start_date=dt(2017, 7, 1),
-                    end_date=dt(2017, 12, 31)
+                    initial_visible_month=dt(2018, 4, 1),
+                    start_date=dt(2018, 1, 1),
+                    end_date=dt(2018, 3, 31)
                     ),
             ],
-    style={'width': '40%', 'backgroundColor':'#eeeeee', 'padding' : '20px', 'border-style': 'solid', 'margin-bottom' : '20px'}),
-      
+    className='col-lg-4  form-group form-control'),
+
     
     html.Div([
-            html.H4(children='''Choose the persons: '''),
+            html.P(children='''Choose the persons: '''),
             html.Div([
-                    html.H4(children='''Person 1'''),
+                    #html.P(children='''Person 1'''),
                     dcc.Dropdown(
                             id='name1',
                             options=[{'label': i, 'value': i} for i in []],
                             value=names[0]
                             )
                     ],
-            style={'width': '24%', 'display': 'inline-block', 'float': 'left'}),
+            style={'width': '24%', 'float': 'left'}),
             html.Div([
-                    html.H4(children='''Person 2'''),
+                    
                     dcc.Dropdown(
                             id='name2',
                             options=[{'label': i, 'value': i} for i in []],
                             value=names[1]
                             )
                     ],
-            style={'width': '24%', 'display': 'inline-block', 'float': 'left'}),
+            style={'width': '24%', 'float': 'left'}),
             html.Div([
-                    html.H4(children='''Person 3'''),
+                    
                     dcc.Dropdown(
                             id='name3',
                             options=[{'label': i, 'value': i} for i in []],
                             value=names[2]
                             )
                     ],
-            style={'width': '24%', 'display': 'inline-block', 'float': 'left'}),
+            style={'width': '24%', 'float': 'left'}),
             html.Div([
-                    html.H4(children='''Person 4'''),
+                    
                     dcc.Dropdown(
                             id='name4',
                             options=[{'label': i, 'value': i} for i in []],
                             value=names[3]
                             )
                 ],
-            style={'width': '24%', 'display': 'inline-block', 'float': 'left'}),
+            style={'width': '24%', 'float': 'left'}),
         ],
-        style={'width': '40%', 'backgroundColor':'#eeeeee', 'padding' : '20px', 'display': 'inline-block', 'border-style': 'solid'}),
-    
+        className='col-lg-8 form-group form-control')
+               
+               
+    ],         
+    className='row'),
+               
+               
+   
     html.Div([           
             dcc.Graph(id='zeitplot')
         ],
-    style={'padding-top' : '20px', 'padding-bottom' : '20px'}),
+    ),
+    
+    #style={'padding-top' : '20px', 'padding-bottom' : '20px'}
+    
+    
+    
+    
     
     html.H2(children='Relation of Persons'),
     html.Div([
@@ -173,11 +179,52 @@ If there is no correlation the value is near zero.
 This measure varies over time as the correlation changes in the same way the relationship of the persons may change.
 We calculate the correlations over **a sliding time window of 30 days** and plot this values as a function of time.''', ),
                          ],
-        style ={'width' : '1100px'}),
+       ),
     dcc.Graph(id='relationplot'),
-    dcc.Markdown('''**Imprint:**  [Dr. Andreas Stöckl](http://www.stoeckl.ai/impressum/)''')
-], style ={'padding' : '40px', 'width' : '1200px', 'backgroundColor':'#f4f7fc'})
+    
+    
 
+html.Div([            
+            
+    html.Div([
+            dcc.Markdown('''
+### The Data
+
+The text-data comes from articles published by *Reuters* agency on their website [www.reuters.com](https://www.reuters.com/).
+At the moment about 70.000 - 80.000 news articles in English and German are indexed. German news are from 2015 until now, English from 2016
+until now.'''),
+    ], className='col-lg-4'),
+
+    html.Div([
+
+        dcc.Markdown('''
+### The Analysis
+
+For each article a Named Entity Extraction (NER) is conducted with a **machine learning algorithm** to detect the mentions of the persons
+in the texts. This algorithm uses a model witch was **pretrained on a corpus** of Google news articles for English and German. The lists of
+persons in the articles are used to calculate the counts and are stored in a database.'''
+        ),
+    ], className='col-lg-4'),
+
+   html.Div([
+          dcc.Markdown('''
+### The Plots
+
+We show a **barchart** of the counts for the most often mentioned persons. For up to four of this persons you can plot the
+**timeseries** of the counts at the same time for a time period you select. For two persons you can calculate their **relation / correlation**
+as a funcion of time.''' 
+        ), 
+        ], className='col-lg-4'),
+
+],
+className='row'),
+    
+    
+    
+    
+    dcc.Markdown('''**Imprint:**  [Dr. Andreas Stöckl](http://www.stoeckl.ai/impressum/)''')
+],  className='container')
+#style ={'padding' : '40px', 'width' : '1200px', 'backgroundColor':'#f4f7fc'},
 
 @app.callback(
     dash.dependencies.Output('zeitplot', 'figure'),
