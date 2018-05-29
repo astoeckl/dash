@@ -31,7 +31,8 @@ app.title='Who is in the News!'
 app.css.append_css({"external_url": "https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"})
 
 app.layout = html.Div([
-    html.H1(children='Who is in the News!', style={'text-align': 'center'}),
+    html.H1(children='Who is in the News!'),
+    #, style={'text-align': 'center'}
     #html.Div([
             #html.Img(src='./static/newspic.jpg')
             #]),
@@ -40,9 +41,45 @@ app.layout = html.Div([
     html.Div([
             dcc.Markdown('''This site gives you some **statistics and plots** of the appearence of persons in written news articles. You can use them for research
                          or journalistic purposes about how often public persons are mentioned in news articles and how these persons are related to each other.
-                         German data are from 2015 until now, English from 2016 until now. For more information on the data see below.''' ),
+                         ''' ),
     ],
       ),
+
+
+html.Div([            
+            
+    html.Div([
+            dcc.Markdown('''
+### The Data
+
+The text-data comes from articles published by *Reuters* agency on their website [www.reuters.com](https://www.reuters.com/).
+At the moment about 70.000 - 80.000 news articles in English and German are indexed. German news are from 2015 until now, English from 2016
+until now.'''),
+    ], className='col-lg-4'),
+
+    html.Div([
+
+        dcc.Markdown('''
+### The Analysis
+
+For each article a Named Entity Extraction (NER) is conducted with a **machine learning algorithm** to detect the mentions of the persons
+in the texts. This algorithm uses a model witch was **pretrained on a corpus** of Google news articles for English and German. The lists of
+persons in the articles are used to calculate the counts and are stored in a database.'''
+        ),
+    ], className='col-lg-4'),
+
+   html.Div([
+          dcc.Markdown('''
+### The Plots
+
+We show a **barchart** of the counts for the most often mentioned persons. For up to four of this persons you can plot the
+**timeseries** of the counts at the same time for a time period you select. For two persons you can calculate their **relation / correlation**
+as a funcion of time.''' 
+        ), 
+        ], className='col-lg-4'),
+
+],
+className='row'),
             
     html.Div([
             html.Div([
@@ -147,9 +184,6 @@ app.layout = html.Div([
         ],
     ),
     
-    #style={'padding-top' : '20px', 'padding-bottom' : '20px'}
-    
-    
     
     
     
@@ -170,6 +204,7 @@ app.layout = html.Div([
                     )
             ],
     style={'width': '20%', 'float': 'center', 'display': 'inline-block'}),
+    
     html.Div([
             dcc.Markdown('''Related Persons measures how **correlated** two persons are, in the sense that they are mentioned
 in the news at the same day. On one hand if they have the same counts every day the correlation is 1, on the
@@ -184,40 +219,7 @@ We calculate the correlations over **a sliding time window of 30 days** and plot
     
     
 
-html.Div([            
-            
-    html.Div([
-            dcc.Markdown('''
-### The Data
 
-The text-data comes from articles published by *Reuters* agency on their website [www.reuters.com](https://www.reuters.com/).
-At the moment about 70.000 - 80.000 news articles in English and German are indexed. German news are from 2015 until now, English from 2016
-until now.'''),
-    ], className='col-lg-4'),
-
-    html.Div([
-
-        dcc.Markdown('''
-### The Analysis
-
-For each article a Named Entity Extraction (NER) is conducted with a **machine learning algorithm** to detect the mentions of the persons
-in the texts. This algorithm uses a model witch was **pretrained on a corpus** of Google news articles for English and German. The lists of
-persons in the articles are used to calculate the counts and are stored in a database.'''
-        ),
-    ], className='col-lg-4'),
-
-   html.Div([
-          dcc.Markdown('''
-### The Plots
-
-We show a **barchart** of the counts for the most often mentioned persons. For up to four of this persons you can plot the
-**timeseries** of the counts at the same time for a time period you select. For two persons you can calculate their **relation / correlation**
-as a funcion of time.''' 
-        ), 
-        ], className='col-lg-4'),
-
-],
-className='row'),
     
     
     
