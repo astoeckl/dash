@@ -126,7 +126,7 @@ className='row'),
                     max_date_allowed=dt(2018, 7, 23),
                     initial_visible_month=dt(2018, 6, 1),
                     start_date=dt(2018, 4, 1),
-                    end_date=dt(2018, 6, 31)
+                    end_date=dt(2018, 6, 30)
                     ),
             ],
     className='col-lg-4  form-group form-control'),
