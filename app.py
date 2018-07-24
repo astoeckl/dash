@@ -123,10 +123,10 @@ className='row'),
             dcc.DatePickerRange(
                     id='datumrange',
                     min_date_allowed=dt(2015, 1, 1),
-                    max_date_allowed=dt(2018, 5, 2),
-                    initial_visible_month=dt(2018, 4, 1),
-                    start_date=dt(2018, 1, 1),
-                    end_date=dt(2018, 3, 31)
+                    max_date_allowed=dt(2018, 7, 23),
+                    initial_visible_month=dt(2018, 6, 1),
+                    start_date=dt(2018, 4, 1),
+                    end_date=dt(2018, 6, 31)
                     ),
             ],
     className='col-lg-4  form-group form-control'),
