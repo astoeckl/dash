@@ -36,8 +36,8 @@ app.layout = html.Div([
     #html.Div([
             #html.Img(src='./static/newspic.jpg')
             #]),
-            
-            
+
+
     html.Div([
             dcc.Markdown('''This site gives you some **statistics and plots** of the appearence of persons in written news articles. You can use them for research
                          or journalistic purposes about how often public persons are mentioned in news articles and how these persons are related to each other.
@@ -46,8 +46,8 @@ app.layout = html.Div([
       ),
 
 
-html.Div([            
-            
+html.Div([
+
     html.Div([
             dcc.Markdown('''
 ### The Data
@@ -63,7 +63,7 @@ until now.'''),
 ### The Analysis
 
 For each article a Named Entity Extraction (NER) is conducted with a **machine learning algorithm** to detect the mentions of the persons
-in the texts. This algorithm uses a model witch was **pretrained on a corpus** of Google news articles for English and German. The lists of
+in the texts. This algorithm uses a model which was **pretrained on a corpus** of Google news articles for English and German. The lists of
 persons in the articles are used to calculate the counts and are stored in a database.'''
         ),
     ], className='col-lg-4'),
@@ -74,13 +74,13 @@ persons in the articles are used to calculate the counts and are stored in a dat
 
 We show a **barchart** of the counts for the most often mentioned persons. For up to four of this persons you can plot the
 **timeseries** of the counts at the same time for a time period you select. For two persons you can calculate their **relation / correlation**
-as a funcion of time.''' 
-        ), 
+as a funcion of time.'''
+        ),
         ], className='col-lg-4'),
 
 ],
 className='row'),
-            
+
     html.Div([
             html.Div([
                     html.H2(children='''Top Persons'''),
@@ -92,7 +92,7 @@ className='row'),
                             value=20
                         )
                     ], className='form-control'),
-                    
+
                     html.Div([
                         html.P(children='''Choose the language:'''),
                         dcc.RadioItems(
@@ -103,21 +103,21 @@ className='row'),
                     ],className='form-control')
                 ],
             className='col-lg-4 form-group' ),
-                        
+
             html.Div([
                     dcc.Graph(id='barchart')
                 ],
             className='col-lg-8')
-        ],         
+        ],
     className='row'),
-            
-    
 
-    html.H2(children='''Variation over time'''),       
-  
+
+
+    html.H2(children='''Variation over time'''),
+
     html.Div([
-    
-    
+
+
     html.Div([
             html.P(children='''Choose the timespan: '''),
             dcc.DatePickerRange(
@@ -131,7 +131,7 @@ className='row'),
             ],
     className='col-lg-4  form-group form-control'),
 
-    
+
     html.Div([
             html.P(children='''Choose the persons: '''),
             html.Div([
@@ -144,7 +144,7 @@ className='row'),
                     ],
             style={'width': '24%', 'float': 'left'}),
             html.Div([
-                    
+
                     dcc.Dropdown(
                             id='name2',
                             options=[{'label': i, 'value': i} for i in []],
@@ -153,7 +153,7 @@ className='row'),
                     ],
             style={'width': '24%', 'float': 'left'}),
             html.Div([
-                    
+
                     dcc.Dropdown(
                             id='name3',
                             options=[{'label': i, 'value': i} for i in []],
@@ -162,7 +162,7 @@ className='row'),
                     ],
             style={'width': '24%', 'float': 'left'}),
             html.Div([
-                    
+
                     dcc.Dropdown(
                             id='name4',
                             options=[{'label': i, 'value': i} for i in []],
@@ -172,21 +172,21 @@ className='row'),
             style={'width': '24%', 'float': 'left'}),
         ],
         className='col-lg-8 form-group form-control')
-               
-               
-    ],         
+
+
+    ],
     className='row'),
-               
-               
-   
-    html.Div([           
+
+
+
+    html.Div([
             dcc.Graph(id='zeitplot')
         ],
     ),
-    
-    
-    
-    
+
+
+
+
     html.H2(children='Relation of Persons'),
     html.Div([
             dcc.Dropdown(
@@ -204,26 +204,26 @@ className='row'),
                     )
             ],
     style={'width': '20%', 'float': 'center', 'display': 'inline-block'}),
-    
+
     html.Div([
             dcc.Markdown('''Related Persons measures how **correlated** two persons are, in the sense that they are mentioned
 in the news at the same day. On one hand if they have the same counts every day the correlation is 1, on the
 other hand if a person appears always on days the second one does not, they are negative correlated near -1.
 If there is no correlation the value is near zero.
-           
+
 This measure varies over time as the correlation changes in the same way the relationship of the persons may change.
 We calculate the correlations over **a sliding time window of 30 days** and plot this values as a function of time.''', ),
                          ],
        ),
     dcc.Graph(id='relationplot'),
-    
-    
 
 
-    
-    
-    
-    
+
+
+
+
+
+
     dcc.Markdown('''**Imprint:**  [Dr. Andreas Stöckl](http://www.stoeckl.ai/impressum/)''')
 ],  className='container')
 #style ={'padding' : '40px', 'width' : '1200px', 'backgroundColor':'#f4f7fc'},
@@ -239,7 +239,7 @@ We calculate the correlations over **a sliding time window of 30 days** and plot
      dash.dependencies.Input('name4', 'value')
      ])
 def update_figure_a(startdatum,enddatum,sprache,name1,name2,name3,name4):
-    
+
     if sprache == 'English':
         dict1 = datumkompakt[name1]
         dict2 = datumkompakt[name2]
@@ -275,7 +275,7 @@ def update_figure_a(startdatum,enddatum,sprache,name1,name2,name3,name4):
             y_name4.append(dict4[str(date).split()[0]])
         else:
             y_name4.append(0)
-    
+
     trace1 = go.Scatter(
     x = datelist,
     y = y_name1,
@@ -300,7 +300,7 @@ def update_figure_a(startdatum,enddatum,sprache,name1,name2,name3,name4):
     mode = 'lines',
     name = name4
     )
-   
+
 
     return {
         'data': [trace1,trace2,trace3,trace4],
@@ -312,19 +312,19 @@ def update_figure_a(startdatum,enddatum,sprache,name1,name2,name3,name4):
             title='Counts over time'
         )
     }
-    
+
 @app.callback(
     dash.dependencies.Output('barchart', 'figure'),
     [     dash.dependencies.Input('sprache', 'value'),
      dash.dependencies.Input('histnum', 'value')
      ])
-        
-def update_figure_b(sprache,histnum):    
+
+def update_figure_b(sprache,histnum):
     if sprache == 'English':
         dict1 = personen
     else:
         dict1 = personen_de
-    
+
     personenliste = sorted(dict1.items(), key=itemgetter(1),reverse=True)
 
     names = list(zip(*personenliste))[0][0:histnum]
@@ -335,7 +335,7 @@ def update_figure_b(sprache,histnum):
     x = values,
     orientation = 'h'
     )
-   
+
 
     return {
         'data': [trace1],
@@ -365,7 +365,7 @@ def set_names_options_a(sprache,histnum):
         dict1 = personen
     else:
         dict1 = personen_de
-    
+
     personenliste = sorted(dict1.items(), key=itemgetter(1),reverse=True)
 
     names = list(zip(*personenliste))[0][0:histnum]
@@ -380,7 +380,7 @@ def set_names_options_b(sprache,histnum):
         dict1 = personen
     else:
         dict1 = personen_de
-    
+
     personenliste = sorted(dict1.items(), key=itemgetter(1),reverse=True)
 
     names = list(zip(*personenliste))[0][0:histnum]
@@ -395,7 +395,7 @@ def set_names_options_c(sprache,histnum):
         dict1 = personen
     else:
         dict1 = personen_de
-    
+
     personenliste = sorted(dict1.items(), key=itemgetter(1),reverse=True)
 
     names = list(zip(*personenliste))[0][0:histnum]
@@ -410,7 +410,7 @@ def set_names_options_d(sprache,histnum):
         dict1 = personen
     else:
         dict1 = personen_de
-    
+
     personenliste = sorted(dict1.items(), key=itemgetter(1),reverse=True)
 
     names = list(zip(*personenliste))[0][0:histnum]
@@ -425,7 +425,7 @@ def set_names_options_e(sprache,histnum):
         dict1 = personen
     else:
         dict1 = personen_de
-    
+
     personenliste = sorted(dict1.items(), key=itemgetter(1),reverse=True)
 
     names = list(zip(*personenliste))[0][0:histnum]
@@ -440,7 +440,7 @@ def set_names_options_f(sprache,histnum):
         dict1 = personen
     else:
         dict1 = personen_de
-    
+
     personenliste = sorted(dict1.items(), key=itemgetter(1),reverse=True)
 
     names = list(zip(*personenliste))[0][0:histnum]
@@ -465,13 +465,13 @@ def zeitKorr(startsegment, endsegment, namea, nameb, sprache):
             y_werte1.append(dicti1[str(date).split()[0]])
         else:
             y_werte1.append(0)
-        
+
     for date in datesegment:
         if str(date).split()[0] in dicti2:
             y_werte2.append(dicti2[str(date).split()[0]])
         else:
             y_werte2.append(0)
-    
+
     return pearsonr(y_werte1,y_werte2)[0]
 
 @app.callback(
@@ -483,14 +483,14 @@ def zeitKorr(startsegment, endsegment, namea, nameb, sprache):
      dash.dependencies.Input('name6', 'value')
      ])
 def update_figure_c(startdatum,enddatum,sprache,name5,name6):
-    
+
     datelist = pd.date_range(start=startdatum, end=enddatum).tolist()
     datelist = pd.to_datetime((datelist))
-    
+
     corr_zeit = []
     for date in datelist[:]:
         corr_zeit.append(zeitKorr(date, date + pd.DateOffset(days=30),name5,name6,sprache))
-    
+
     trace1 = go.Scatter(
     x = datelist,
     y = corr_zeit,
